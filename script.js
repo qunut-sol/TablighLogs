@@ -88,10 +88,8 @@ async function loadPageSpecificFunctions() {
         } else if (currentPage.includes("Markaz")) {
             loadMarkazFunctions();
         }
-    } else 
-        // if (currentPage.includes("index")) 
+    } else if (currentPage.includes("index") || currentPage=="") 
         {
-            console.log(currentPage);
         loadIndexFunctions(); //for login page
     }
 }
