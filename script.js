@@ -81,7 +81,6 @@ function setFavicon(){
 }
 
 async function loadPageSpecificFunctions() {
-        console.log("hi");
     if (currentPage.includes("Masjid") || currentPage.includes("Markaz")) {
         await loadCommonFunctionsForMarkazAndMasjid();
         if (currentPage.includes("Masjid")) {
@@ -89,7 +88,9 @@ async function loadPageSpecificFunctions() {
         } else if (currentPage.includes("Markaz")) {
             loadMarkazFunctions();
         }
-    } else if (currentPage.includes("index")) {
+    } else 
+        // if (currentPage.includes("index")) 
+        {
         loadIndexFunctions(); //for login page
     }
 }
