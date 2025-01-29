@@ -91,6 +91,7 @@ async function loadPageSpecificFunctions() {
     } else 
         // if (currentPage.includes("index")) 
         {
+            console.log(currentPage);
         loadIndexFunctions(); //for login page
     }
 }
