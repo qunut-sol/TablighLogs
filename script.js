@@ -26,7 +26,6 @@ async function callAppsScriptFunction(payload){
 }
 
 $(document).ready(async function () { 
-    console.log("hi");
     // Prepare the payload for the POST request
     const payload = { action: 'getSheetsData' };
     sheetsData = await callAppsScriptFunction(payload);
@@ -82,6 +81,7 @@ function setFavicon(){
 }
 
 async function loadPageSpecificFunctions() {
+        console.log("hi");
     if (currentPage.includes("Masjid") || currentPage.includes("Markaz")) {
         await loadCommonFunctionsForMarkazAndMasjid();
         if (currentPage.includes("Masjid")) {
