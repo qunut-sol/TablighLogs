@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabligh Logs - Login</title>
+    <style>
+        #loginForm{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            background-color: #d1cfcf;
+            max-width: 500px;
+            padding: 30px;
+            margin: 30px;
+            border-radius: 10px;
+            height: 125px;
+        }         
+        
+        .cred{
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        #submitLogin{
+            background-color: black;
+            color: white;
+            font-size: large;
+            width: 100%;
+        }
+        #submitLogin:hover{
+            opacity: 80%;
+        }
+
+
+    </style>
+</head>
+<body>
+    <iframe id="headerFrame" src="Header.html" width="100%" height="70px" frameborder="0" scrolling="no"></iframe>
+    <form id="loginForm" autocomplete="on">
+        <select name="username" id="username" class="cred masjidDropdown" autocomplete="off" required>
+            <option value="" selected disabled>--select your Masjid--</option>
+            <option id="waitForList" disabled>Masjid List Loading... Kindly wait.</option>       
+        </select> 
+        <input id="password" type="password" placeholder="Password" class="cred" autocomplete="on" required>
+        <input type="submit" id="submitLogin" class="cred" value="Log In" autocomplete="on">
+        <p id="errorMessage"></p>
+        <!-- <input type="submit" id="submitLogin" class="cred" value="Log In" autocomplete="on" onsubmit="login(username.value)" onclick="login(username.value)"> -->
+    </form>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="script.js"></script>   
+</body>
+</html>

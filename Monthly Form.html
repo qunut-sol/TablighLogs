@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Monthly</title>
+    <style>
+        .displayOff{
+            display: none !important;
+        }
+        .fullFormMonthly{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 500px;
+        }
+        input,button,select{
+            padding: 5px;
+            border-radius: 4px;
+        }
+        button {
+            min-width: 100px;
+            margin: 3px;
+        }
+        #langChecklist{
+            display: flex;
+            /* justify-content: space-around; */
+        }
+
+        .hidden{
+            display: none;
+        }
+
+        .urdu,.hindi,.bengali{
+            display: none;
+        }
+
+        /* .multilingualContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        } */
+
+        .sectionName h2{
+            margin: 10px;
+        }
+        .subsectionName h3{
+            margin: 0;
+            margin-bottom: 5px;
+        }
+
+        .monthly.form.field{
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+        }
+
+        /* .dateMasjidQiyamContainer{
+            display: grid;
+            align-items: center;
+        } */
+
+        .section1{
+            display: grid;
+            grid-template-columns: 15px 2fr 1fr;
+            text-align: left;
+        }
+
+        .sectionsContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .bgForSec1{
+            background-color: #00ffff;
+        }
+
+        .bgForSec2{
+            background-color: #00ffff60;
+        }
+
+        .bgForSec3{
+            background-color: #ffc0cb60;
+        }
+
+        .subsectionContainer{
+            text-align: left;
+            background-color: #00ffff;
+            border-radius: 5px;
+            margin: 15px;
+            padding: 10px;
+        }
+
+        .subsection2.field{
+            display: grid;
+            grid-template-columns: 10px 2fr 1fr;
+        }
+
+        .field{
+            border: solid;
+            border-radius: 5px;
+            border-width: thin;
+            border-color: #00000010;
+            align-items: center;
+        }
+
+        .doubleRowEntry.field{
+            display: grid;
+            grid-template-columns: 10px 2fr 1fr 1fr;
+            column-gap: 10px;
+        }
+
+        .totalActive{
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .buttonsDiv{
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        pre{
+            margin: 0;
+        }
+
+        .pinkSub{
+            background-color: pink;
+        }
+
+        #section2Container,#section3Container{
+            display: none;
+        }
+
+        .doubleRowEntry .containsInput {
+            display: flex;
+            justify-content: center;
+        }
+
+        .secNavContainer{
+            width: 100%;
+        }
+
+        #sectionDotsContainer,.sectionNumbers{
+            /* display: grid;
+            grid-template-columns: 1fr 1fr 1fr; */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .sectionDot{
+            height: 9px;
+            width: 9px;
+            border-radius: 50%;
+            background-color: black;
+        }
+
+        #sectionLineContainer{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr ;
+            translate: 0px -8px;
+        }
+        .secLine{
+            border-top-style: solid;
+        }
+        .sectionNumbers{
+            font-size: small;
+        }
+        .openedSecName{
+            font-size: large;
+        }
+        .openedSecDot{
+            height: 15px;
+            width: 15px;
+        }
+
+        select[readonly] {
+        pointer-events: none;
+        background-color: #f5f5f5; /* Optional: Make it look disabled */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="fullFormMonthly" id="fullFormMonthly">
+    <h1>Monthly Entry Reporting Form</h1>
+
+    <div id="langChecklist">
+        <div>
+            <input type="checkbox" id="english" class="checkbox" name="english" value="english" checked>
+            <label for="english">English</label>      
+        </div>
+        <div>
+            <input type="checkbox" id="urdu" class="checkbox" name="urdu" value="urdu">
+            <label for="urdu">اردو</label>
+        </div>
+        <div>
+            <input type="checkbox" id="hindi" class="checkbox" name="hindi" value="hindi">
+            <label for="hindi">हिन्दी</label>
+        </div>
+        <div>
+            <input type="checkbox" id="bengali" class="checkbox" name="bengali" value="bengali">
+            <label for="bengali">বাংলা</label>
+        </div>
+    </div>
+
+    <form id="monthlyForm">
+        <div class="dateMasjidQiyamContainer">
+            <div class="form monthly field date horizontallyAlignChildren" id="formMonthlyDate">
+                <div class="multilingualContainer">
+                    <div class="english">Date:</div>
+                    <div class="urdu">تاریخ:</div>
+                    <div class="hindi">तारीख</div>
+                    <div class="bengali">তারিখ</div>
+                </div>
+                <input type="date" id="date" name="date" required>
+            </div>
+            
+            <div class="form monthly field masjid horizontallyAlignChildren">
+                <div class="multilingualContainer">
+                    <div class="english">Masjid:</div>
+                    <div class="urdu">مسجد کا نام:</div>
+                    <div class="hindi">मस्जिद का नाम</div>
+                    <div class="bengali">মসজিদের নাম</div>
+                </div>                
+                <select name="masjid" id="masjidDD" class="masjidDropdown" required>
+                    <option value="not selected" selected disabled>--select a Masjid--</option>
+                </select>                
+            </div>
+
+            <div>
+                <div class="form monthly field masjid horizontallyAlignChildren">
+                    <div class="multilingualContainer">
+                        <div class="english">Place for Qiyam?</div>
+                        <div class="urdu">قیام کے لیے جگہ</div>
+                        <div class="hindi">कियाम के लिए जगह</div>
+                        <div class="bengali">কিয়ামের স্থান</div>
+                    </div>
+                    <div>
+                        <input type="radio" id="yes" name="fav_language" value="yes" required>
+                        <label for="yes">Yes</label>
+                        <input type="radio" id="no" name="fav_language" value="no">
+                        <label for="no">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sectionsContainer bgForSec1" id="sectionsContainer">
+            <div class="secNavContainer">
+                <div class="sectionNumbers">
+                    <div id="sec1Name" class="secNum openedSecName">Section 1</div>
+                    <div id="sec2Name" class="secNum">Section 2</div>
+                    <div id="sec3Name" class="secNum">Section 3</div>
+                </div>
+                <div id="lineDotContainer">
+                    <div id="sectionDotsContainer">
+                        <div id="dot1" class="sectionDot openedSecDot"></div>
+                        <div id="dot2" class="sectionDot"></div>
+                        <div id="dot3" class="sectionDot"></div>
+                    </div>
+                    <div id="sectionLineContContainer">
+                        <div id="sectionLineContainer">
+                            <div class=""></div>
+                            <div class="secLine"></div>
+                            <div class="secLine"></div>
+                            <div class="secLine"></div>
+                            <div class="secLine"></div>
+                            <div class=""></div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+
+            <div class="section1Container" id="section1Container">
+                <div class="multilingualContainer sectionName">
+                    <h2 class="english">The Five Āmāl of the Masjid</h2>
+                    <h2 class="urdu">مسجد کے پانچوں اعمال</h2>
+                    <h2 class="hindi">मस्जिद के पाँच अमल</h2>
+                    <h2 class="bengali">মসজিদের পাঁচটি আমাল</h2>
+                </div>
+
+                <div>
+                    <div class="section1 field horizontallyAlignChildren">
+                        <div>1.</div>
+                        <div class="multilingualContainer">
+                            <div class="english">Mashware me Sathi:
+                                <span onclick="play(this,'section 1 amal 1')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="urdu">مشوارہ
+                                <span onclick="play(this,'section 1 amal 1')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="hindi">मशवारा
+                                <span onclick="play(this,'section 1 amal 1')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="bengali">মাশওয়ারা
+                                <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                        </div>
+                        <div><input type="number" id="" name="Mashware me Sathi" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">
+                        <div>2.</div>
+                        <div class="multilingualContainer">
+                            <div class="english">Talim:
+                                <span onclick="play(this,'section 1 amal 2')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="urdu">تعلیم
+                                <span onclick="play(this,'section 1 amal 2')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="hindi">तालीम
+                                <span onclick="play(this,'section 1 amal 2')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="bengali">শিক্ষাদান
+                                <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                        </div>
+                        <div><input type="number" id="" name="Talim" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">
+                        <div>3.</div>
+                        <div class="multilingualContainer">
+                            <div class="english">Dawah:
+                                <span onclick="play(this,'section 1 amal 3')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="urdu">دعوۃ
+                                <span onclick="play(this,'section 1 amal 3')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="hindi">दावा 
+                                <span onclick="play(this,'section 1 amal 3')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="bengali">দাওয়াহ
+                                <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="section1 field">
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">2.5 Hrs Sathi:</div>
+                            <div class="urdu">2.5 گھنٹے ساتھی</div>
+                            <div class="hindi">2.5 घंटे साथी </div>
+                            <div class="bengali">2.5 ঘন্টা সাথী</div>
+                        </div>
+                        <div><input type="number" id="" name="2.5 Hrs Sathi" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">Dawat / Talim / Istiqbal:</div>
+                            <div class="urdu">دعوت/تعلیم/استقبال</div>
+                            <div class="hindi">दावत / तालीम / इस्तेकबाल </div>
+                            <div class="bengali">দাওয়াত/তালিম/ইসতেকবাল</div>
+                        </div>
+                        <div><input type="number" id="" name="Dawat Talim Istiqbal" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">5 Hrs Sathi:</div>
+                            <div class="urdu">5 گھنٹے ساتھی</div>
+                            <div class="hindi">5 घंटे साथी</div>
+                            <div class="bengali">5 ঘন্টা সাথী</div>
+                        </div>
+                        <div><input type="number" id="" name="5 Hrs Sathi" min="1" max="99"></div>
+                    </div>
+                    
+                    <div class="section1 field">
+                        <div>4.</div>
+                        <div class="multilingualContainer">
+                            <div class="english">Gasht weekly:
+                                <span onclick="play(this,'section 1 amal 4')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="urdu">گشت ہفتہ وار
+                                <span onclick="play(this,'section 1 amal 4')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="hindi">साप्ताहिक गश्त
+                                <span onclick="play(this,'section 1 amal 4')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="bengali">গাষ্ট সাপ্তাহিক
+                                <span onclick="play(this,'section 1 amal 4')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="section1 field">
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">Muqami:</div>
+                            <div class="urdu">مقامی</div>
+                            <div class="hindi">मुकामी</div>
+                            <div class="bengali">মুকামি</div>
+                        </div>
+                        <div><input type="number" id="" name="Muqami" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">                    
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">Inteqali:</div>
+                            <div class="urdu">انٹیکالی</div>
+                            <div class="hindi">इंतेक़ाली</div>
+                            <div class="bengali">ইন্তেকালি</div>
+                        </div>
+                        <div><input type="number" id="" name="Inteqali" min="1" max="99"></div>
+                    </div>
+
+                    <div class="section1 field">
+                        <div>5.</div>
+                        <div class="multilingualContainer">
+                            <div class="english">Jamāt monthly:
+                                <span onclick="play(this,'section 1 amal 5')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="urdu">ماہانہ جماعت
+                                <span onclick="play(this,'section 1 amal 5')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="hindi">मासिक जमात
+                                <span onclick="play(this,'section 1 amal 5')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="bengali">জামাত মাসিক
+                                <span onclick="play(this,'section 1 amal 5')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="section1 field">
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">10 Days:</div>
+                            <div class="urdu">10 دن</div>
+                            <div class="hindi">10 दिन</div>
+                            <div class="bengali">10 দিন</div>
+                        </div>
+                        <div><input type="number" id="" name="10 Days" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">                    
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">3 Days:</div>
+                            <div class="urdu">3 دن</div>
+                            <div class="hindi">3 दिन</div>
+                            <div class="bengali">3 দিন</div>
+                        </div>
+                        <div><input type="number" id="" name="3 Days" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">2 Days:</div>
+                            <div class="urdu">2 دن</div>
+                            <div class="hindi">2 दिन</div>
+                            <div class="bengali">2 দিন</div>
+                        </div>
+                        <div><input type="number" id="" name="2 Days" min="1" max="99"></div>
+                    </div>
+                    <div class="section1 field">                    
+                        <pre> •</pre>
+                        <div class="multilingualContainer">
+                            <div class="english">1 Day:</div>
+                            <div class="urdu">1 دن</div>
+                            <div class="hindi">1 दिन</div>
+                            <div class="bengali">1 দিন</div>
+                        </div>
+                        <div><input type="number" id="" name="1 Day" min="1" max="99"></div>
+                    </div>
+                </div>
+                <div class="buttonsDiv">
+                    <button type="button" id="closeMonthlyForm">Close</button>
+                    <button type="button" id="Sec1NextButton" onclick="sectionChange('openSec2')">Next</button>
+                </div>
+            </div>
+
+            <div class="section2Container" id="section2Container">
+                <div class="multilingualContainer section2 title sectionName">
+                    <h2 class="english">Kārguzāri</h2>
+                    <h2 class="urdu">کارگزاری</h2>
+                    <h2 class="hindi">कारगुज़ारी</h2>
+                    <h2 class="bengali">কারগুজারী</h2>
+                </div>
+                <div class="section2 subsectionContainer">
+                    <div class="multilingualContainer subsection1 title subsectionName">
+                        <h3 class="english">Past Month
+                            <span onclick="play(this,'section 2 past month')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                        <h3 class="urdu">پچھلے مہینے
+                            <span onclick="play(this,'section 2 past month')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                        <h3 class="hindi">पिछला महीना
+                            <span onclick="play(this,'section 2 past month')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                        <h3 class="bengali">গত মাসে
+                            <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                    </div>
+                    <div class="subsection2 fields horizontallyAlignChildren">
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">4 Months</div>
+                                <div class="urdu">4 ماہ</div>
+                                <div class="hindi">4 महीने</div>
+                                <div class="bengali">4 মাস</div>
+                            </div>
+                            <div><input type="number" id="" name="Past Month" min="1" max="99"></div>
+                        </div>
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">40 Days Jamat</div>
+                                <div class="urdu">40 دن کی جماعت</div>
+                                <div class="hindi">40 दिन की जमात</div>
+                                <div class="bengali">40 দিন জামাত</div>
+                            </div>
+                            <div><input type="number" id="" name="40 Days Jamat" min="1" max="99"></div>
+                        </div>
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">40 Days Afrad</div>
+                                <div class="urdu">40 دن افراد</div>
+                                <div class="hindi">40 दिन लोग</div>
+                                <div class="bengali">40 দিন ভয় পায়</div>
+                            </div>
+                            <div><input type="number" id="" name="40 Days Afrad" min="1" max="99"></div>
+                        </div>
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">Foreign</div>
+                                <div class="urdu">غیر ملکی</div>
+                                <div class="hindi">विदेश</div>
+                                <div class="bengali">বিদেশী</div>
+                            </div>
+                            <div><input type="number" id="" name="Foreign" min="1" max="99"></div>
+                        </div>
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">2 Month Markaz Tartib</div>
+                                <div class="urdu">2 ماہ مرکز ترتب</div>
+                                <div class="hindi">2 महीना मरकज़ तरतीब</div>
+                                <div class="bengali">২ মাসের মারকাজ তারতীব</div>
+                            </div>
+                            <div><input type="number" id="" name="2 Month Markaz Tartib" min="1" max="99"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section2 subsectionContainer second">
+                    <div class="subsectionName">
+                        <div class="multilingualContainer subsection1 title subsectionName">
+                            <h3 class="english">Old Record
+                                <span onclick="play(this,'section 2 old record')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                            <h3 class="urdu">پرانے ریکارڈز
+                                <span onclick="play(this,'section 2 old record')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                            <h3 class="hindi">पुराना रिकॉर्ड
+                                <span onclick="play(this,'section 2 old record')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                            <h3 class="bengali">পুরাতন রেকর্ড
+                                <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div></div>
+                        <div></div>
+                        <div class="multilingualContainer totalActive">
+                            <div class="english">Total</div>
+                            <div class="urdu">کل</div>
+                            <div class="hindi">कुल</div>
+                            <div class="bengali">মোট</div>
+                        </div> 
+                        <div class="multilingualContainer totalActive">
+                            <div class="english">Active</div>
+                            <div class="urdu">فعال</div>
+                            <div class="hindi">सक्रिय</div>
+                            <div class="bengali">সক্রিয়</div>
+                        </div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">1 Year</div>
+                                <div class="urdu">1 سال</div>
+                                <div class="hindi">1 वर्ष</div>
+                                <div class="bengali">1 বছর</div>
+                            </div> 
+                        </div>
+                        <div><input type="number" id="" name="1 Year Active" min="1" max="99"></div>
+                        <div><input type="number" id="" name="1 Year Total" min="1" max="99"></div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">4 Months</div>
+                                <div class="urdu">4 ماہ</div>
+                                <div class="hindi">4 महीने</div>
+                                <div class="bengali">4 মাস</div>
+                            </div> 
+                        </div>
+                        <div><input type="number" id="" name="4 Months Active" min="1" max="99"></div>
+                        <div><input type="number" id="" name="4 Months Total" min="1" max="99"></div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">40 Days</div>
+                                <div class="urdu">40 دن</div>
+                                <div class="hindi">40 दिन</div>
+                                <div class="bengali">40 দিন</div>
+                            </div> 
+                        </div>
+                        <div><input type="number" id="" name="40 Days Active" min="1" max="99"></div>
+                        <div><input type="number" id="" name="40 Days Total" min="1" max="99"></div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">10 Days</div>
+                                <div class="urdu">10 دن</div>
+                                <div class="hindi">10 दिन</div>
+                                <div class="bengali">10 দিন</div>
+                            </div> 
+                        </div>
+                        <div><input type="number" id="" name="10 Days Active" min="1" max="99"></div>
+                        <div><input type="number" id="" name="10 Days Total" min="1" max="99"></div>                
+                    </div>
+                </div>
+                <div class="buttonsDiv">
+                    <button type="button" onclick="sectionChange('openSec1')">Back</button>
+                    <button type="button" onclick="sectionChange('openSec3')">Next</button>
+                </div>
+            </div>
+
+            <div class="section3Container" id="section3Container">
+                <div class="multilingualContainer section2 title sectionName">
+                    <h2 class="english">Masturāt</h2>
+                    <h2 class="urdu">مستورات</h2>
+                    <h2 class="hindi">महिलाएं</h2>
+                    <h2 class="bengali">নারী</h2>
+                </div>
+                <div class="section2 subsectionContainer pinkSub">
+                    <div class="subsection2 field">
+                        <div>• </div>
+                        <div class="multilingualContainer">
+                            <div class="english">Places of Taleem
+                                <span onclick="play(this,'section 3 places')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="urdu">تعلیم کے مقامات
+                                <span onclick="play(this,'section 3 places')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="hindi">तालीम के स्थान
+                                <span onclick="play(this,'section 3 places')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                            <div class="bengali">তালিমের স্থান
+                                <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </div>
+                        </div>
+                        <div><input type="number" id="" name="Places of Taleem" min="1" max="99"></div>
+                    </div>
+                </div>
+                <div class="section2 subsectionContainer pinkSub">
+                    <div class="multilingualContainer subsection1 title subsectionName">
+                        <h3 class="english">Taleem
+                            <span onclick="play(this,'section 3 taleem')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                        <h3 class="urdu">تلیم
+                            <span onclick="play(this,'section 3 taleem')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                        <h3 class="hindi">तालीम
+                            <span onclick="play(this,'section 3 taleem')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                        <h3 class="bengali">তালিম
+                            <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                        </h3>
+                    </div>
+                    
+                    <div class="subsection2 fields horizontallyAlignChildren">
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">Home Talim Only</div>
+                                <div class="urdu">صرف ہوم تلیم</div>
+                                <div class="hindi">केवल घरेलू तालीम</div>
+                                <div class="bengali">শুধুমাত্র হোম তালিম</div>
+                            </div>
+                            <div><input type="number" id="" name="Places of Taleem" min="1" max="99"></div>
+                        </div>
+                        <div class="subsection2 field">
+                            <div>• </div>
+                            <div class="multilingualContainer">
+                                <div class="english">Home Talim With 5 Amaal</div>
+                                <div class="urdu">5 امل کے ساتھ گھریلو تلیم</div>
+                                <div class="hindi">5 अमाल के साथ होम तालीम</div>
+                                <div class="bengali">৫ আমাল সহ হোম তালিম</div>
+                            </div>
+                            <div><input type="number" id="" name="Places of Taleem" min="1" max="99"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section2 subsectionContainer second pinkSub">
+                    <div class="subsectionName">
+                        <div class="multilingualContainer subsection1 title subsectionName">
+                            <h3 class="english">Kārguzāri
+                                <span onclick="play(this,'section 3 karguzari')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                            <h3 class="urdu">کارگزاری
+                                <span onclick="play(this,'section 3 karguzari')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                            <h3 class="hindi">कारगुज़ारी
+                                <span onclick="play(this,'section 3 karguzari')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                            <h3 class="bengali">কারগুজারী
+                                <span onclick="play(this,'')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/></svg></span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div></div>
+                        <div></div>
+                        <div class="multilingualContainer totalActive">
+                            <div class="english">Past Month</div>
+                            <div class="urdu">پچھلے مہینے</div>
+                            <div class="hindi">पिछला महीना</div>
+                            <div class="bengali">গত মাসে</div>
+                        </div> 
+                        <div class="multilingualContainer totalActive">
+                            <div class="english">Old Record</div>
+                            <div class="urdu">پرانے ریکارڈز</div>
+                            <div class="hindi">पुराना रिकॉर्ड</div>
+                            <div class="bengali">পুরাতন রেকর্ড</div>
+                        </div>                
+                    </div>
+                    
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">40 Days</div>
+                                <div class="urdu">40 دن</div>
+                                <div class="hindi">40 दिन</div>
+                                <div class="bengali">40 দিন</div>
+                            </div> 
+                        </div>
+                        <div class="containsInput"><input type="number" id="" name="40 Days Active" min="1" max="99"></div>
+                        <div class="containsInput"><input type="number" id="" name="40 Days Total" min="1" max="99"></div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">10 Days</div>
+                                <div class="urdu">10 دن</div>
+                                <div class="hindi">10 दिन</div>
+                                <div class="bengali">10 দিন</div>
+                            </div> 
+                        </div>
+                        <div class="containsInput"><input type="number" id="" name="10 Days Active" min="1" max="99"></div>
+                        <div class="containsInput"><input type="number" id="" name="10 Days Total" min="1" max="99"></div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">3 Days</div>
+                                <div class="urdu">3 دن</div>
+                                <div class="hindi">3 दिन</div>
+                                <div class="bengali">3 দিন</div>
+                            </div> 
+                        </div>
+                        <div class="containsInput"><input type="number" id="" name="3 Days Active" min="1" max="99"></div>
+                        <div class="containsInput"><input type="number" id="" name="3 Days Total" min="1" max="99"></div>                
+                    </div>
+                    <div class="doubleRowEntry field">
+                        <div>• </div>
+                        <div>
+                            <div class="multilingualContainer">
+                                <div class="english">3 Days with Tartib</div>
+                                <div class="urdu">3 دن ترطیب کے ساتھ</div>
+                                <div class="hindi">तरतीब के साथ 3 दिन</div>
+                                <div class="bengali">তারতিবের সাথে ৩ দিন</div>
+                            </div> 
+                        </div>
+                        <div></div>
+                        <div class="containsInput"><input type="number" id="" name="3 Days with Tartib" min="1" max="99"></div>                
+                    </div>
+                </div>
+                <div class="buttonsDiv">
+                    <button type="button" onclick="sectionChange('openSec2')">Back</button>
+                    <button type="submit" value="Submit">Submit</button>
+                </div>
+            </div>            
+        </div>
+    </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>

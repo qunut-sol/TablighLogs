@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabligh Logs - Header</title>
+    <style>
+        .displayOff{
+            display: none;
+        }
+        #headerID{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 500px;
+        }
+        #logo{
+            margin-left: 40px;
+            margin-left: 5%;
+        }
+        #appName{
+            text-align: center;
+        }
+
+        #svgAndUserContainer{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #usertypeContainer{
+         display: flex;
+         flex-direction: column;
+         align-items: center;   
+        }   
+        .hideVisibility{
+            visibility: hidden !important;
+        }
+        #logout{
+            text-align: center;
+            background-color:beige;
+            border-radius: 5px;
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header id="headerID">
+        <img id="logo" src="./assets/images/2303247_architect_dome_masjid_mosque_ramadhan_icon.svg" width="40" height="40">
+        <h2 id="appName">Tabligh Logs</h2>
+        <div id="svgUserLogoutContainer">
+            <div id="svgAndUserContainer" class="hideVisibility">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                </svg>
+                <div id="usertypeContainer">
+                    <div id="masjidOrMarkaz" class="masjidOrMarkaz">test</div>
+                    <div>Admin</div>
+                </div>
+            </div>
+            <div id="logout" class="displayOff">Log out</div>
+        </div>
+    </header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- <script src="script.js"></script> -->
+</body>
+</html>

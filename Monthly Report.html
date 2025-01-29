@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Report</title>
+    <style>
+        .filter-dashboard-container{
+            display: flex;
+            flex-direction: column;
+        }
+        #filtersContainer{
+            display: flex;
+            gap: 10px;
+            justify-content: space-evenly;
+        }
+        input,button,select{
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .textbox-n{
+        max-width: 75px;
+        flex-shrink: 1;
+        }
+        #dashboardContainer{
+        background-color: #d2d2fa;
+        margin: 5px;
+        align-content: center;
+        text-align: center;
+        border-radius: 5px;
+        width: 100%;
+        min-height: 300px;
+        }
+        #searchByMasjid{
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: 50%;
+        }
+        .openForm.Button.div{
+            display: flex;
+            justify-content: flex-end;
+        }
+        .displayOff{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="filter-dashboard-container" class="filter-dashboard-container">
+        <div id="filtersContainer">  
+            <input id="searchByMasjid" type="text" class="filter-field" placeholder="Search by Masjid Name">      
+            <input
+                placeholder="From Date"
+                class="textbox-n filter-field"
+                type="text"
+                onfocus="(this.type='date')"
+                onblur="(this.type='text')"
+                id="fromDate" 
+            />
+            <input
+                placeholder="To Date"
+                class="textbox-n filter-field"
+                type="text"
+                onfocus="(this.type='date')"
+                onblur="(this.type='text')"
+                id="toDate"  
+            />
+        </div>
+        <div id="dashboardContainer">
+            This is placeholder for Monthly Dashboard 
+        </div>
+        <div id="divforBtnOpenMonthlyForm" class="openForm Button div">
+            <button id="openMonthlyFormBtn" class="openFormButton" type="button">New Monthly Entry</button>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

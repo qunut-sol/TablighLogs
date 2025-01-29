@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabligh Logs - Markaz</title>
+    <style>
+        html {
+            display: table;
+            margin: auto;
+        }
+        body{
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h4{
+            margin: 1px;
+        }
+
+        input,button,select{
+            padding: 3px;
+            border-radius: 5px;
+        }
+        button{
+            min-width: 100px;
+            margin: 3px;
+        }
+        .tabs{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-items: center; 
+            gap: 20px;           
+        }
+        .dim{
+            opacity: 50%;
+        }
+        .greenBG{
+            background-color: #9bff9b;
+        }
+        #weekly-report-Container{
+            min-height: 300px;
+            margin: 10px;
+            border-radius: 5px;
+            text-align: center;
+            align-content: center;
+        }
+
+        /* .Weekly.Form.Master.container{
+            position: relative;
+        } */
+        .field.weekly.date{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .weekly.sub.section{
+            background-color: aqua;
+            border-radius: 15px;
+            padding: 1px 20px 10px;
+            margin: 10px;
+        }
+        .title{
+            text-align: center;
+        }
+        .rukhs{
+            gap: 10px;
+            margin: 5px;
+        }
+        .rukh.container{
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+        .subsec2.rukh{
+            display: grid;
+            grid-template-columns: 5px 3fr 1fr 20px;
+        }
+
+        #unblurred{
+            height: 100%;
+            width: 100%;
+            position: relative;
+            backdrop-filter: blur(3px);
+            position: fixed;
+            top: 0;
+            left:0;
+        }
+        #popUp{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #eb9595;
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .displayOff{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="headerFrame" src="Header.html" width="100%" height="70px" frameborder="0" scrolling="no"></iframe>
+    <div id="tabs" class="tabs">
+        <h3 id="weekly-report-tab-title" class="weekly report tab title">Weekly Report</h3>
+        <h3 id="monthly-report-tab-title" class="monthly report tab title dim">Monthly Report</h3>
+    </div>
+
+    <div id="weekly-filter-report-container">
+        <div id="filtersContainer">  
+            <input
+                placeholder="From Date"
+                class="textbox-n filter-field"
+                type="text"
+                onfocus="(this.type='date')"
+                onblur="(this.type='text')"
+                id="fromDateWeekly" 
+            />
+            <input
+                placeholder="To Date"
+                class="textbox-n filter-field"
+                type="text"
+                onfocus="(this.type='date')"
+                onblur="(this.type='text')"
+                id="toDateWeekly"             
+            />
+        </div>
+        <div id="weekly-report-Container" class="greenBG">The Weekly Dashboard data will show up here.</div>
+        <div id="divforBtnOpenWeeklyForm" class="openForm Button div">
+            <a id="shareLatestOnWAanchor" href aria-label="Chat on WhatsApp"> Share Latest Tarteeb
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                </svg>
+            <a>
+            <button id="openWeeklyFormBtn" class="openFormButton" type="button">New Weekly Entry</button>
+        </div>
+    </div>
+
+    <div id="weeklyFormMasterContainer" class="Weekly Form Master container displayOff">
+        <h3 class="form title">Weekly Entry Form</h3>
+        <form id="WeeklyForm">
+            <div class="field weekly date">
+                <div>Date:</div>
+                <input id="weeklyDate" type="date" name="date" required>
+            </div>
+            <div class="weekly sub section first">
+                <h3 class="weekly title">Jamat Tarteeb</h3>
+                <fieldset id="singleDayFieldset">
+                    <legend>
+                        <h3 class="weekly sub-title">Single Day Jamat</h3>
+                    </legend>
+                    <div class="rukhs container">
+                        <div class="rukh container 1-day singleDay">
+                            <div>• Rukh 1:</div>
+                            <select name="masjid" class="rukh dropdown masjidDropdown" >
+                                <option value selected>--select a Masjid--</option>                                                                -->
+                            </select> 
+                            <svg id="1-dayRukh1svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                            </svg>                                                           
+                        </div>
+                    </div> 
+                </fieldset>          
+                <fieldset id="threeDaysFieldset">
+                    <legend>
+                        <h3 class="weekly sub-title">Three Days Jamat</h3>
+                    </legend>
+                    <div class="rukhs container">
+                        <div class="rukh container 3-days threeDays">
+                            <div>• Rukh 1:</div>
+                            <select name="masjid" class="rukh dropdown masjidDropdown">
+                                <option value selected>--select a Masjid--</option>
+                            </select> 
+                            <svg id="3-dayRukh1svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                            </svg>                                                           
+                        </div>
+                    </div> 
+                </fieldset>                     
+            </div>
+            <div class="weekly sub section second">
+                <h3 class="weekly title">Next Week Zimmedari</h3>
+                <div class="rukhs container">
+                    <div class="rukh container subsec2">
+                        <div>• </div>
+                        <div>City Mashwara Numainde:</div>
+                        <input type="text" name="Numainde">                                                                                  
+                    </div>                    
+                </div>
+                <div class="rukhs container">
+                    <div class="rukh container subsec2">
+                        <div>• </div>
+                        <div>Mashwara Zimmedar:</div>
+                        <input type="text" name="Zimmedar">                                                                                  
+                    </div>                    
+                </div>
+                <div class="rukhs container">
+                    <div class="rukh container subsec2">
+                        <div>• </div>
+                        <div>Targhibi Baat by:</div>
+                        <input type="text" name="Baat">                                                                                  
+                    </div>                    
+                </div>
+                <div class="rukhs container">
+                    <div class="rukh container subsec2">
+                        <div>• </div>
+                        <div>Khidmat by:</div>
+                        <select name="khidmat" class="khidmat masjid dropdown masjidDropdown">
+                            <option value selected>--select a Masjid--</option>
+                        </select>
+                        <svg id="khidmatSVG" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>                                                                                 
+                    </div>                    
+                </div>
+            </div>
+            <div class="buttonsDiv">
+                <button type="button" id="closeWeeklyForm">Close</button>
+                <button type="submit" id="submitWeeklyForm">Submit</button>
+            </div>
+        </form>
+        <div id="unblurred" class="displayOff">
+            <div id="popUp" class="">
+                <h3 id="popUpTitle">Latest Jamat Tarteeb</h3>
+                <h4>1-day Jamat</h4>
+                <ul id="1-dayRukhsUL"></ul>
+                <h4>3-days Jamat</h4>
+                <ul id="3-dayRukhsUL"></ul>
+                <div class="">
+                    <div>Share on WhatsApp?
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                        </svg>
+                    </div>
+                    <button id="whatsAppYes" type="button" >Yes</button>
+                    <button id="whatsAppNo" type="submit">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
