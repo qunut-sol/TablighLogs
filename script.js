@@ -26,6 +26,7 @@ async function callAppsScriptFunction(payload){
 }
 
 $(document).ready(async function () { 
+    console.log("hi");
     // Prepare the payload for the POST request
     const payload = { action: 'getSheetsData' };
     sheetsData = await callAppsScriptFunction(payload);
