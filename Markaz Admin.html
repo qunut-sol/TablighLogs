@@ -37,20 +37,7 @@
         .dim{
             opacity: 50%;
         }
-        .greenBG{
-            background-color: #9bff9b;
-        }
-        #weekly-report-Container{
-            min-height: 300px;
-            margin: 10px;
-            border-radius: 5px;
-            text-align: center;
-            align-content: center;
-        }
 
-        /* .Weekly.Form.Master.container{
-            position: relative;
-        } */
         .field.weekly.date{
             display: flex;
             justify-content: center;
@@ -106,6 +93,33 @@
         .displayOff{
             display: none;
         }
+
+        .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+        }
+        /* Safari */
+        @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
+        .weekly .column-2-data{
+            position: sticky;
+            left: 50px; 
+            z-index: 2;
+            border-right: 1px solid #000;
+        }
     </style>
 </head>
 <body>
@@ -134,7 +148,10 @@
                 id="toDateWeekly"             
             />
         </div>
-        <div id="weekly-report-Container" class="greenBG">The Weekly Dashboard data will show up here.</div>
+        <div class="loader weeklyDashboard"></div>              
+        <div id="weekly-report-Container" class="dashboardContainer">
+            <table id="weeklyDashboard" class="dashboardTable weekly"></table>
+        </div>
         <div id="divforBtnOpenWeeklyForm" class="openForm Button div">
             <a id="shareLatestOnWAanchor" href aria-label="Chat on WhatsApp"> Share Latest Tarteeb
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-whatsapp" viewBox="0 0 16 16">

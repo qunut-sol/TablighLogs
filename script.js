@@ -1,6 +1,7 @@
-const URL = 'https://script.google.com/macros/s/AKfycbxT7v5uP0IDNKJFLHJgZ8bY3BNFX_RbvDXUusIFVpoc9VOj8RM5rWAwPpOD_s9WzJ9GvQ/exec';
+const URL = 'https://script.google.com/macros/s/AKfycbx4rY9fX0te2vyPx-tUqor2y-sHQrdp0AD98_MYwJ0bsTrZjkMuoXZ8BLIB2GghxrpftA/exec';
+// const URL = 'https://script.google.com/macros/s/AKfycbxT7v5uP0IDNKJFLHJgZ8bY3BNFX_RbvDXUusIFVpoc9VOj8RM5rWAwPpOD_s9WzJ9GvQ/exec';
 const currentPage = window.location.pathname.split("/").pop();
-let sheetsData;
+let sheetsData, monthlySheet, weeklySheet;
 let monthlyData;
 let weeklyData;
 let userCreds;
@@ -30,8 +31,10 @@ $(document).ready(async function () {
     const payload = { action: 'getSheetsData' };
     sheetsData = await callAppsScriptFunction(payload);
 
+    monthlySheet = sheetsData[0];
     monthlyData = sheetsData[0].data;
 
+    weeklySheet = sheetsData[1];
     weeklyData = sheetsData[1].data;
     LatestWeeklyEntry = weeklyData[2];
     LatestJamatDate = dateFormatChange(LatestWeeklyEntry[0]);
@@ -44,7 +47,75 @@ $(document).ready(async function () {
     
     loadPageSpecificFunctions();
     setFavicon();
+    document.querySelectorAll('.loader').forEach(eachEl => {eachEl.remove()});
 });
+
+function createDashboard(sheet){
+   
+    const { data, backgrounds, textColors, fontFamilies, fontSizes, horizontalAlignments, verticalAlignments, bold, italic, underline } = sheet;
+
+    // Transpose function
+    const transpose = (matrix) => matrix[0].map((_, i) => matrix.map(row => row[i]));
+
+    // Format date for the first row (original first column)
+    const formatDate = (d) => isNaN(new Date(d)) ? d : new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric'
+    }).format(new Date(d));
+
+    // Transpose all data arrays
+    const [tData, tBg, tColor, tFont, tSize, tHAlign, tVAlign, tBold, tItalic, tUnderline] =
+        [data, backgrounds, textColors, fontFamilies, fontSizes, horizontalAlignments, verticalAlignments, bold, italic, underline].map(transpose);
+
+    // Merging logic for first two columns as a 2D Array (kinda matrix)
+    const mergeMap = Array(tData.length).fill(null).map(() => Array(tData[0].length).fill(1)); // rowspan values
+
+    for (let col = 0; col < 2; col++) { // Only first two columns
+        for (let row = 0; row < tData.length; row++) {
+            if (tData[row][col] && row + 1 < tData.length) { // If cell has value, check below
+                let spanCount = 1;
+                while (row + spanCount < tData.length && !tData[row + spanCount][col]) {
+                    mergeMap[row + spanCount][col] = 0; // Mark for removal
+                    spanCount++;
+                }
+                mergeMap[row][col] = spanCount; // Set rowspan
+            }
+        }
+    }        
+
+    tableElementID = sheet.name.includes("eekly") ? "weeklyDashboard" : "monthlyDashboard";
+
+    document.getElementById(tableElementID).innerHTML = 
+    // tData.map((row, r) => `<tr class="${tableElementID === 'monthlyDashboard' && r === 1 ? 'hidden' : ''}">${
+    tData.map((row, r) => `<tr>${
+        row.map((cell, c) => mergeMap[r][c] > 0 ? `<td 
+                                                        style="background:${tBg[r][c] || "transparent"};
+                                                            color:${tColor[r][c]?.color || "#000"};
+                                                            font:${tBold[r][c] === "bold" ? "bold" : "normal"} 
+                                                                ${tItalic[r][c] === "italic" ? "italic" : "normal"} 
+                                                                ${tSize[r][c] || 14}px ${tFont[r][c] || "Arial"};
+                                                            text-decoration:${tUnderline[r][c] === "underline" ? "underline" : "none"};
+                                                            text-align:${tHAlign[r][c] || "left"};
+                                                            vertical-align:${tVAlign[r][c] || "middle"};"
+                                                        class="column-${c + 1}-data row-${r + 1}-data"
+                                                        ${mergeMap[r][c] > 1 ? `rowspan="${mergeMap[r][c]}"` : ""}
+                                                    >
+                                                    ${r === 0 ? formatDate(cell) : dealLineBreaks(cell)}
+                                                    </td>` 
+                                                : `<td class="hidden"></td>`
+                ).join("")
+    }</tr>`).join("");
+
+    if (loggedInUser.includes("Masjid")) {
+        setTimeout(() => {
+            document.querySelector(`#${tableElementID} tr:nth-child(2)`).classList.add("hidden");      
+        }, 200); // Adjust delay if needed
+    }
+}
+
+function dealLineBreaks(cellData){
+    return String(cellData || "").replace(/\n/g, "<br>").replace(/, /g, "<br>");
+}
+
 
 // On page load, check if a user is logged in
 function checkIfLogged () {
@@ -88,8 +159,7 @@ async function loadPageSpecificFunctions() {
         } else if (currentPage.includes("Markaz")) {
             loadMarkazFunctions();
         }
-    } else if (currentPage.includes("index") || currentPage=="") 
-        {
+    } else if (currentPage.includes("index")) {
         loadIndexFunctions(); //for login page
     }
 }
@@ -164,6 +234,70 @@ async function loadCommonFunctionsForMarkazAndMasjid() {
     });
 
     onMonthlyFormSubmit();
+
+    createDashboard(monthlySheet);
+
+    searchMonthly();
+}
+
+function setupSearch(tableId, searchInputId, fromDateId, toDateId, startCol) {
+    const searchInput = searchInputId ? document.getElementById(searchInputId) : null;
+    const fromDate = document.getElementById(fromDateId);
+    const toDate = document.getElementById(toDateId);
+    const table = document.getElementById(tableId);
+    const rows = table.rows;
+
+    if (searchInput) searchInput.addEventListener("input", filterTable);
+    fromDate.addEventListener("change", filterTable);
+    toDate.addEventListener("change", filterTable);
+
+    function filterTable() {
+        let masjidQuery = searchInput ? searchInput.value.toLowerCase().trim() : "";
+        let from = new Date(fromDate.value);
+        let to = new Date(toDate.value);
+
+        for (let col = startCol; col < rows[0].cells.length; col++) {
+            let dateText = rows[0].cells[col].textContent.trim();
+            let masjidText = searchInput ? rows[1].cells[col].textContent.toLowerCase().trim() : "";
+            let date = new Date(dateText);
+
+            let showByMasjid = !searchInput || masjidQuery === "" || masjidText.includes(masjidQuery);
+            let showByDate = (!fromDate.value || date >= from) && (!toDate.value || date <= to);
+            let shouldShow = showByMasjid && showByDate;
+
+            for (let row of rows) {
+                let cell = row.cells[col];
+                cell.classList.toggle("displayOff", !shouldShow);
+            }
+        }
+    }
+}
+
+function searchMonthly() {
+    setupSearch("monthlyDashboard", "searchByMasjid", "fromDate", "toDate", 3);
+}
+
+function searchWeekly() {
+    setupSearch("weeklyDashboard", null, "fromDateWeekly", "toDateWeekly", 2);
+}
+
+function filteredMonthlyForMasjid(masjidName) {
+    let table = document.getElementById("monthlyDashboard");
+    let secondRowCells = Array.from(table.rows[1].cells); // Convert to array
+
+    // Get indexes of matching columns, skipping the first 3 columns
+    let matchedIndexes = secondRowCells
+        .map((cell, index) => (index >= 3 && cell.innerText === masjidName ? index : -1))
+        .filter(index => index !== -1);
+
+    // Hide/show columns based on matchedIndexes
+    Array.from(table.rows).forEach(row => {
+        Array.from(row.cells).forEach((cell, i) => {
+            if (i >= 3) {
+                cell.classList.toggle("hidden", !matchedIndexes.includes(i));
+            }
+        });
+    });
 }
 
 function DisableLastCheckUnselection(){
@@ -185,9 +319,10 @@ function DisableLastCheckUnselection(){
 }
 
 function loadMasjidFunctions() {
-    console.log(" for Masjid.html");
     // Add specific functions for Masjid.html here
     //Set up for Masjid--------------------
+
+    filteredMonthlyForMasjid(loggedInUser);
 
     preSelectLoggedMasjid();
 
@@ -209,6 +344,8 @@ function loadMasjidFunctions() {
 }
 
 function loadMarkazFunctions() {
+
+    createDashboard(weeklySheet);
 
     setHeaderFunctions("Markaz");
 
@@ -248,6 +385,8 @@ function loadMarkazFunctions() {
         show(['tabs']);
     });
 
+    searchWeekly();
+
     // On an +svg click
     document.addEventListener("click", (event) => {
         // Check if the clicked element is an SVG
@@ -262,13 +401,6 @@ function loadMarkazFunctions() {
             if (parentDiv && mainContainer) {
                 // Clone the parentDiv
                 const clonedElement = parentDiv.cloneNode(true);
-
-                // const firstChildDiv = clonedElement.querySelector("div:nth-child(1)");
-                // const secondChildDiv = clonedElement.querySelector("div:nth-child(2)");
-                // if (firstChildDiv && secondChildDiv) {
-                //     firstChildDiv.textContent = ""; // Set the first element text to empty
-                //     secondChildDiv.textContent = "&"; // Set the second element text to "&"
-                // }
 
                 console.log(parentDiv.closest("fieldset"));
 
@@ -310,7 +442,7 @@ function populateMasjidsList(masjids, ulElementId) {
         ulElement.appendChild(li);
     } else {
         // Split the string and create <li> elements for each masjid
-        const masjidArray = masjids.split(", ");
+        const masjidArray = masjids.split(",");
         masjidArray.forEach(masjid => {
         const li = document.createElement("li");
         li.textContent = masjid;
@@ -409,7 +541,7 @@ function setHeaderFunctions(user_type){
         const logoutBtn = iframeDocument.getElementById("logout");
 
         //set usertype as Masjid or Markaz
-        iframeDocument.getElementById("masjidOrMarkaz").innerHTML = user_type;
+        iframeDocument.getElementById("loggedInUser").innerHTML = loggedInUser;
 
         // make it visible
         svgAndUser.classList.remove("hideVisibility");
@@ -445,6 +577,8 @@ function isValidDate(value) {
 function dateFormatChange(dateInput){
     // Create a Date object from the input value
     const date = new Date(dateInput);
+
+    if (isNaN(date)) return dateInput; // Return original if not a valid date
 
     //get the desired format
     const formattedDate = new Intl.DateTimeFormat('en-GB', {
@@ -561,13 +695,13 @@ function onWeeklyFormSubmit(){
         const singleDayMasjids = Array.from(
             document.querySelectorAll("#singleDayFieldset select")
         ).map((select) => select.value).filter((value) => value);
-        formDataArray.push(singleDayMasjids.join(", ") );
+        formDataArray.push(singleDayMasjids.join(",\n"));
 
         // Three Days Jamat - Combine all selected masjid values into one
         const threeDaysMasjids = Array.from(
             document.querySelectorAll("#threeDaysFieldset select")
         ).map((select) => select.value).filter((value) => value);
-        formDataArray.push(threeDaysMasjids.join(", "));
+        formDataArray.push(threeDaysMasjids.join(",\n"));
 
         // Get all input[type="text"] elements within the form
         const textInputs = document.querySelectorAll("#WeeklyForm input[type='text']");
@@ -580,7 +714,7 @@ function onWeeklyFormSubmit(){
         const khidmatMasjids = Array.from(
             document.querySelectorAll(".weekly.sub.section.second select")
         ).map((select) => select.value).filter((value) => value);
-        formDataArray.push(khidmatMasjids.join(", "));
+        formDataArray.push(khidmatMasjids.join(",\n"));
 
         // Prepare the payload for the POST request
         const payload = {
