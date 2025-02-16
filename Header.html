@@ -28,7 +28,9 @@
             gap: 5px;
         }
         #loggedInUser{
-            max-width: 100px;
+            max-width: max-content;     /* Ensures it never stretches unnecessarily */
+            width: min-content;         /* Makes it as small as possible when wrapping */
+            white-space: normal;        /* Allows wrapping when needed */
             text-align: center;
         }
   

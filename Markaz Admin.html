@@ -16,6 +16,11 @@
             align-items: center;
         }
 
+        select{
+            max-width: 25ch;
+            min-width: 15ch;
+        }
+
         h4{
             margin: 1px;
         }
@@ -94,6 +99,11 @@
             display: none;
         }
 
+        #weekly-filter-report-container{
+            display: flex;
+            flex-direction: column;
+        }
+
         .loader {
         border: 16px solid #f3f3f3;
         border-radius: 50%;
@@ -123,7 +133,7 @@
     </style>
 </head>
 <body>
-    <iframe id="headerFrame" src="Header.html" width="95vw" height="70px" frameborder="0" scrolling="no"></iframe>
+    <iframe id="headerFrame" src="Header.html" width="100%" height="70px" frameborder="0" scrolling="no"></iframe>
     <div id="tabs" class="tabs">
         <h3 id="weekly-report-tab-title" class="weekly report tab title">Weekly Report</h3>
         <h3 id="monthly-report-tab-title" class="monthly report tab title dim">Monthly Report</h3>

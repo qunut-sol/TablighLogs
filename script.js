@@ -227,9 +227,9 @@ async function loadCommonFunctionsForMarkazAndMasjid() {
 
     setHeaderFunctions();
 
-    await loadOtherHTML("Monthly Report.html");
+    await loadOtherHTML("Monthly ReportNForm.html");
     createAndSetupDashboard(monthlySheet);   
-    await loadOtherHTML("Monthly Form.html");
+    // await loadOtherHTML("Monthly Form.html");
 
     addMasjidsInDD();
 
@@ -250,8 +250,8 @@ async function loadCommonFunctionsForMarkazAndMasjid() {
 
     document.getElementById("shareLatestOnWAanchor").addEventListener("click",function(event){
         event.preventDefault(); // Prevent default navigation
-        const arrayLatestSingleDayMasjids = LatestSingleDayMasjids!="" ? LatestSingleDayMasjids.split(", ") : ['None'];
-        const arrayLatestThreeDayMasjids = LatestThreeDayMasjids!="" ? LatestThreeDayMasjids.split(", ") : ['None'];
+        const arrayLatestSingleDayMasjids = LatestSingleDayMasjids!="" ? LatestSingleDayMasjids.replace(/\n/g, "").split(",") : ['None'];
+        const arrayLatestThreeDayMasjids = LatestThreeDayMasjids!="" ? LatestThreeDayMasjids.replace(/\n/g, "").split(",") : ['None'];
         sendOnWA(LatestJamatDate, arrayLatestSingleDayMasjids, arrayLatestThreeDayMasjids);
     });
 
