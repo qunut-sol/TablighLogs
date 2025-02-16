@@ -50,7 +50,7 @@ $(document).ready(async function () {
     document.querySelectorAll('.loader').forEach(eachEl => {eachEl.remove()});
 });
 
-function createDashboard(sheet){
+async function createDashboard(sheet){
    
     const { data, backgrounds, textColors, fontFamilies, fontSizes, horizontalAlignments, verticalAlignments, bold, italic, underline } = sheet;
 
@@ -103,13 +103,32 @@ function createDashboard(sheet){
                                                     </td>` 
                                                 : `<td class="hidden"></td>`
                 ).join("")
-    }</tr>`).join("");
+    }</tr>`).join(""); 
+}
 
-    if (loggedInUser.includes("Masjid")) {
-        setTimeout(() => {
-            document.querySelector(`#${tableElementID} tr:nth-child(2)`).classList.add("hidden");      
-        }, 200); // Adjust delay if needed
+function setUpDashboard(sheet){
+    tableElementID = sheet.name.includes("eekly") ? "weeklyDashboard" : "monthlyDashboard";
+
+    const table = document.getElementById(tableElementID);
+
+    const firstCol = table.querySelector("tr td:first-child, tr th:first-child");
+    const secondCol = table.querySelector("tr td:nth-child(2), tr th:nth-child(2)");
+
+    const firstWidth = firstCol.offsetWidth;
+    const secondWidth = secondCol.offsetWidth;
+
+    const secondColumnCells = table.querySelectorAll("tr td:nth-child(2), tr th:nth-child(2)");
+    const thirdColumnCells = table.querySelectorAll("tr td:nth-child(3), tr th:nth-child(3)");
+
+    secondColumnCells.forEach(cell => cell.style.left = `${firstWidth}px`);
+    if (tableElementID="monthlyDashboard"){
+        thirdColumnCells.forEach(cell => cell.style.left = `${firstWidth + secondWidth}px`);
     }
+
+    //Hide Masjid Name row for Masjid Login
+    if (loggedInUser.includes("Masjid")) {
+        document.querySelector(`#${tableElementID} tr:nth-child(2)`).classList.add("hidden");      
+    }    
 }
 
 function dealLineBreaks(cellData){
@@ -206,7 +225,10 @@ async function loadCommonFunctionsForMarkazAndMasjid() {
         window.location.href = 'index.html';       
     }
 
+    setHeaderFunctions();
+
     await loadOtherHTML("Monthly Report.html");
+    createAndSetupDashboard(monthlySheet);   
     await loadOtherHTML("Monthly Form.html");
 
     addMasjidsInDD();
@@ -235,9 +257,12 @@ async function loadCommonFunctionsForMarkazAndMasjid() {
 
     onMonthlyFormSubmit();
 
-    createDashboard(monthlySheet);
-
     searchMonthly();
+}
+
+async function createAndSetupDashboard(sheet){
+    await createDashboard(sheet);
+    setUpDashboard(sheet);
 }
 
 function setupSearch(tableId, searchInputId, fromDateId, toDateId, startCol) {
@@ -326,8 +351,6 @@ function loadMasjidFunctions() {
 
     preSelectLoggedMasjid();
 
-    setHeaderFunctions("Masjid");
-
     setUpLatestJamatCard();
 
     document.getElementById("openMonthlyFormBtn").addEventListener("click",function(){
@@ -344,10 +367,6 @@ function loadMasjidFunctions() {
 }
 
 function loadMarkazFunctions() {
-
-    createDashboard(weeklySheet);
-
-    setHeaderFunctions("Markaz");
 
     hide(['filter-dashboard-container']);
 
@@ -387,43 +406,82 @@ function loadMarkazFunctions() {
 
     searchWeekly();
 
-    // On an +svg click
-    document.addEventListener("click", (event) => {
-        // Check if the clicked element is an SVG
-        const svg = event.target.closest("svg");
-        if (svg) {
-            // Find the closest parent container (parent of the SVG)
-            const parentDiv = svg.closest("div");
-            
-            // Find the parent of that parentDiv (the main container)
-            const mainContainer = parentDiv?.parentElement;
+    onSVGClick();
 
-            if (parentDiv && mainContainer) {
-                // Clone the parentDiv
-                const clonedElement = parentDiv.cloneNode(true);
+    createAndSetupDashboard(weeklySheet);
+}
 
-                console.log(parentDiv.closest("fieldset"));
+function onSVGClick(){
+        // On an +svg click
+        document.addEventListener("click", (event) => {
+            // Check if the clicked element is an SVG
+            const svg = event.target.closest("svg");
+            if (svg) {
+                // Find the closest parent container (parent of the SVG)
+                const parentDiv = svg.closest("div");
+                
+                // Find the parent of that parentDiv (the main container)
+                const mainContainer = parentDiv?.parentElement;
+    
+                if (parentDiv && mainContainer) {
+                    // Clone the parentDiv
+                    const clonedElement = parentDiv.cloneNode(true);
+    
+                    console.log(parentDiv.closest("fieldset"));
+    
+                    if (parentDiv.closest("fieldset")){
+                        // Increment the Rukh number in the first child <div>
+                        const currentRukhText = clonedElement.firstElementChild.textContent;
+                        const currentRukhNumber = parseInt(currentRukhText.match(/\d+/)[0], 10);
+                        const newRukhNumber = currentRukhNumber + 1;
+                        clonedElement.firstElementChild.textContent = `• Rukh ${newRukhNumber}:`;  
+                    } else{
+                        // Special handling for the Khidmat section
+                        clonedElement.querySelector("div:nth-child(1)").textContent = "";
+                        clonedElement.querySelector("div:nth-child(2)").textContent = "&";
+                    }
+    
+                    // Append the cloned element to the main container
+                    mainContainer.appendChild(clonedElement);
 
-                if (parentDiv.closest("fieldset")){
-                    // Increment the Rukh number in the first child <div>
-                    const currentRukhText = clonedElement.firstElementChild.textContent;
-                    const currentRukhNumber = parseInt(currentRukhText.match(/\d+/)[0], 10);
-                    const newRukhNumber = currentRukhNumber + 1;
-                    clonedElement.firstElementChild.textContent = `• Rukh ${newRukhNumber}:`;  
-                } else{
-                    // Special handling for the Khidmat section
-                    clonedElement.querySelector("div:nth-child(1)").textContent = "";
-                    clonedElement.querySelector("div:nth-child(2)").textContent = "&";
+                    // Apply uniqueness check on new dropdowns
+                    preventDuplicateSelections();
+    
+                    // Remove only the clicked SVG
+                    svg.remove();
                 }
-
-                // Append the cloned element to the main container
-                mainContainer.appendChild(clonedElement);
-
-                // Remove only the clicked SVG
-                svg.remove();
             }
+        });
+}
+
+function preventDuplicateSelections() {
+    document.querySelectorAll(".rukhs select").forEach((select) => {
+        select.addEventListener("change", function () {
+            checkDuplicateSelection(this);
+            // updateDropdownOptions(this);
+        });
+    });
+}
+
+function checkDuplicateSelection(changedSelect) {
+    const fieldset = changedSelect.closest("fieldset") || changedSelect.closest(".weekly.sub.section.second");
+    const allSelects = fieldset.querySelectorAll("select");
+    const selectedValue = changedSelect.value;
+
+    let isDuplicate = false;
+
+    // Check if the selected value already exists in any other select
+    allSelects.forEach((select) => {
+        // Skip the select that triggered the change
+        if (select !== changedSelect && select.value === selectedValue) {
+            isDuplicate = true;
         }
     });
+
+    if (isDuplicate) {
+        alert("This Masjid is already selected, please select a different Masjid!");
+        changedSelect.value = ""; // Reset the select to allow the user to choose again
+    }
 }
 
 function setUpLatestJamatCard(){
@@ -529,7 +587,7 @@ async function loadOtherHTML(htmlName) {
     }
 }
 
-function setHeaderFunctions(user_type){
+function setHeaderFunctions(){
     const iframe = document.querySelector("#headerFrame");
     iframe.src = "Header.html?v=" + new Date().getTime(); // browser-cache-busting query string
 
