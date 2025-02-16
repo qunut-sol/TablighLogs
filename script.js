@@ -717,7 +717,9 @@ function addRow(payload){
         .then(data => {
             if (data.status === 'success') {
                 alert('Form submitted successfully');
-                location.reload();
+                if (payload.sheetName.includes('onthly')){                    
+                    location.reload();
+                }
             } else {
                 alert('An error occurred while submitting.')
                 console.error('Error adding row:', data.message);
